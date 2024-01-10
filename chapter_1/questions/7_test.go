@@ -63,11 +63,3 @@ func TestRotateMatrix(t *testing.T) {
 		})
 	}
 }
-
-func printMatrix(matrix [][]int) {
-	fmt.Println("")
-	for _, row := range matrix {
-		fmt.Println(row)
-	}
-	fmt.Println("")
-}

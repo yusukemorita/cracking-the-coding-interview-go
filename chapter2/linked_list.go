@@ -1,5 +1,18 @@
 package main
 
+type GenericLinkedListNode[T comparable] struct {
+	value   T
+	pointer *GenericLinkedListNode[T]
+}
+
+func (node GenericLinkedListNode[T]) values() []T {
+	if node.pointer == nil {
+		return []T{node.value}
+	}
+
+	return append([]T{node.value}, node.pointer.values()...)
+}
+
 type LinkedListNode struct {
 	value   string
 	pointer *LinkedListNode

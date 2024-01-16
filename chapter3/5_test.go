@@ -7,13 +7,13 @@ import (
 func TestSortStack(t *testing.T) {
 	t.Run("does not raise error when stack is empty", func(t *testing.T) {
 		stack := GenericStack[int]{}
-		SortStack(&stack)
+		SortStack2(&stack)
 	})
 
 	t.Run("does nothing when stack has 1 item", func(t *testing.T) {
 		stack := GenericStack[int]{}
 		stack.push(1)
-		SortStack(&stack)
+		SortStack2(&stack)
 
 		popped, ok := stack.pop()
 		if !ok || popped != 1 {
@@ -34,7 +34,7 @@ func TestSortStack(t *testing.T) {
 		stack.push(3)
 		stack.push(4)
 
-		SortStack(&stack)
+		SortStack2(&stack)
 
 		for _, expected := range []int{1, 2, 3, 4, 5} {
 			value, ok := stack.pop()

@@ -2,7 +2,10 @@ package main
 
 import "fmt"
 
-// assume numbers in stack are greater than 0
+// 1. iterate through the stack and move all items to the secondary stack, while extracting the max the
+// 2. insert max into the original stack
+// 3. move all items back into the original stack
+// 4. repeat, but leave the sorted items in the original stack
 func SortStack(stack *GenericStack[int]) {
 	var max *int
 	tempStack := GenericStack[int]{}
@@ -95,5 +98,64 @@ func SortStack(stack *GenericStack[int]) {
 
 		// increment the sortedCount
 		sortedCount++
+	}
+}
+
+func SortStack2(stack *GenericStack[int]) {
+	// this stack will be sorted so that large numbers are on top
+	sortedStack := GenericStack[int]{}
+
+	for {
+		fmt.Printf("stack: %v, sortedStack: %v\n", stack.values(), sortedStack.values())
+
+		popped, ok := stack.pop()
+		if !ok {
+			// stack is empty
+			break
+		}
+
+		// insert the popped value in the correctly sorted position
+		// in sortedStack
+		temporarilyMovedCount := 0
+
+		for {
+			sortedStackTop, ok := sortedStack.pop()
+			// if sortedStack is empty, push the popped value
+			if !ok {
+				sortedStack.push(popped)
+				break
+			}
+
+			// when popped is bigger than the top of the sorted stack, move on top
+			if popped >= sortedStackTop {
+				sortedStack.push(sortedStackTop)
+				sortedStack.push(popped)
+				break
+			}
+
+			stack.push(sortedStackTop)
+			temporarilyMovedCount++
+		}
+
+		// move temporarily moved items back to sortedStack
+		for i := 1; i <= temporarilyMovedCount; i++ {
+			popped, ok := stack.pop()
+			if !ok {
+				// shouldn't happen
+				break
+			}
+
+			sortedStack.push(popped)
+		}
+	}
+
+	// move items back into the original stack
+	for {
+		value, ok := sortedStack.pop()
+		if !ok {
+			break
+		}
+
+		stack.push(value)
 	}
 }

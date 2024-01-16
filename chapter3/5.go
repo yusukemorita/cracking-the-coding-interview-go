@@ -115,37 +115,33 @@ func SortStack2(stack *GenericStack[int]) {
 		}
 
 		// insert the popped value in the correctly sorted position
-		// in sortedStack
-		temporarilyMovedCount := 0
-
+		// in sortedStack.
+		// any items that are larger than the popped value will be moved back
+		// to the stack.
+		// these will be added back to the sortedStack in later iterations of the same
+		// for loop.
 		for {
-			sortedStackTop, ok := sortedStack.pop()
+			sortedStackTop, ok := sortedStack.peek()
 			// if sortedStack is empty, push the popped value
 			if !ok {
 				sortedStack.push(popped)
 				break
 			}
 
-			// when popped is bigger than the top of the sorted stack, move on top
+			// when popped is bigger than sortedStackTop, push on top
 			if popped >= sortedStackTop {
-				sortedStack.push(sortedStackTop)
 				sortedStack.push(popped)
 				break
 			}
 
-			stack.push(sortedStackTop)
-			temporarilyMovedCount++
-		}
-
-		// move temporarily moved items back to sortedStack
-		for i := 1; i <= temporarilyMovedCount; i++ {
-			popped, ok := stack.pop()
+			// when popped is smaller than sortedStackTop, we need to insert it
+			// underneath sortedStackTop. Therefore, move sortedStackTop back to the
+			// original stack.
+			sortedStackTop, ok = sortedStack.pop()
 			if !ok {
-				// shouldn't happen
-				break
+				panic("this shouldn't happen, as the value has already been peeked")
 			}
-
-			sortedStack.push(popped)
+			stack.push(sortedStackTop)
 		}
 	}
 

@@ -30,6 +30,15 @@ func TestMyQueue_Pop(t *testing.T) {
 			t.Errorf("expected ok: false, got ok: %v", ok)
 		}
 	})
+
+	t.Run("returns false when empty", func(t *testing.T) {
+		myQueue := NewMyQueue()
+
+		_, ok := myQueue.pop()
+		if ok {
+			t.Errorf("expected ok: true, got %v", ok)
+		}
+	})
 }
 
 func TestMyQueue_Peek(t *testing.T) {

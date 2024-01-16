@@ -4,80 +4,64 @@ package main
 // FIFO
 type MyQueue struct {
 	// one stack is always empty
-	mainStack *Stack
-	tempStack *Stack
+	newOnTop *Stack
+	oldOnTop *Stack
 }
 
 func NewMyQueue() MyQueue {
 	return MyQueue{
-		mainStack: &Stack{},
-		tempStack: &Stack{},
+		newOnTop: &Stack{},
+		oldOnTop: &Stack{},
 	}
 }
 
 // O(1)
 func (q *MyQueue) push(value string) {
-	q.mainStack.push(value)
+	if q.newOnTop.isEmpty() && !q.oldOnTop.isEmpty() {
+		q.transferToNewOnTop()
+	}
+
+	q.newOnTop.push(value)
 }
 
-// O(2N) = O(N), as all items in main stack have to be
-// moved to temp stack and then back
+func (q *MyQueue) transferToNewOnTop() {
+	// move everything to newOnTop
+	for {
+		popped, ok := q.oldOnTop.pop()
+		if !ok {
+			break
+		}
+
+		q.newOnTop.push(popped)
+	}
+}
+
+func (q *MyQueue) transferToOldOnTop() {
+	// move everything to oldOnTop
+	for {
+		popped, ok := q.newOnTop.pop()
+		if !ok {
+			break
+		}
+
+		q.oldOnTop.push(popped)
+	}
+}
+
+// O(2N) = O(N), as all items in newOnTop have to be
+// moved to oldOnTop and then back
 func (q *MyQueue) pop() (string, bool) {
-	// first, transfer everything to the tempStack
-	for {
-		popped, ok := q.mainStack.pop()
-		if !ok {
-			break
-		}
-
-		q.tempStack.push(popped)
+	if !q.newOnTop.isEmpty() && q.oldOnTop.isEmpty() {
+		q.transferToOldOnTop()
 	}
 
-	poppedFromTemp, ok := q.tempStack.pop()
-	if !ok {
-		// main stack was empty to begin with
-		return "", false
-	}
-
-	// return everything back to the main stack
-	for {
-		popped, ok := q.tempStack.pop()
-		if !ok {
-			break
-		}
-
-		q.mainStack.push(popped)
-	}
-
-	return poppedFromTemp, true
+	return q.oldOnTop.pop()
 }
 
 func (q *MyQueue) peek() (string, bool) {
-	// first, transfer everything to the tempStack
-	for {
-		popped, ok := q.mainStack.pop()
-		if !ok {
-			break
-		}
-
-		q.tempStack.push(popped)
+	if !q.newOnTop.isEmpty() && q.oldOnTop.isEmpty() {
+		q.transferToOldOnTop()
 	}
 
-	peekedFromTemp, ok := q.tempStack.peek()
-	if !ok {
-		// main stack was empty to begin with
-		return "", false
-	}
-
-	// return everything back to the main stack
-	for {
-		popped, ok := q.tempStack.pop()
-		if !ok {
-			break
-		}
-
-		q.mainStack.push(popped)
-	}
-
-	return peekedFromTemp, true
+	return q.oldOnTop.peek()
 }

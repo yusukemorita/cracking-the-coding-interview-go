@@ -51,3 +51,33 @@ func (q *MyQueue) pop() (string, bool) {
 
 	return poppedFromTemp, true
 }
+
+func (q *MyQueue) peek() (string, bool) {
+	// first, transfer everything to the tempStack
+	for {
+		popped, ok := q.mainStack.pop()
+		if !ok {
+			break
+		}
+
+		q.tempStack.push(popped)
+	}
+
+	peekedFromTemp, ok := q.tempStack.peek()
+	if !ok {
+		// main stack was empty to begin with
+		return "", false
+	}
+
+	// return everything back to the main stack
+	for {
+		popped, ok := q.tempStack.pop()
+		if !ok {
+			break
+		}
+
+		q.mainStack.push(popped)
+	}
+
+	return peekedFromTemp, true
+}

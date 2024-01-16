@@ -36,6 +36,14 @@ func (s *Stack) pop() (string, bool) {
 	return popped.value, true
 }
 
+func (s *Stack) peek() (string, bool) {
+	if s.head == nil {
+		return "", false
+	}
+
+	return s.head.value, true
+}
+
 func (s *Stack) isEmpty() bool {
 	return s.length == 0
 }

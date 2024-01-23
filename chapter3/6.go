@@ -1,6 +1,10 @@
 package main
 
-import "time"
+import (
+	"errors"
+	"fmt"
+	"time"
+)
 
 type Queue[T comparable] struct {
 	first *LinkedListNode[T]
@@ -85,4 +89,18 @@ func (shelter *AnimalShelter) DequeueAny() (Animal, bool) {
 		// dog arrived first
 		return shelter.dogQueue.dequeue()
 	}
+}
+
+func (shelter *AnimalShelter) Enqueue(animal Animal) error {
+	if animal.species == "dog" {
+		shelter.dogQueue.enqueue(animal)
+		return nil
+	}
+
+	if animal.species == "cat" {
+		shelter.catQueue.enqueue(animal)
+		return nil
+	}
+
+	return errors.New(fmt.Sprintf("invalid species: %s", animal.species))
 }

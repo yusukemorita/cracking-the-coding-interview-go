@@ -22,3 +22,21 @@ type BSTNode struct {
 	left  *BSTNode
 	right *BSTNode
 }
+
+func (node *BSTNode) Height() int {
+	leftHeight := 0
+	if node.left != nil {
+		leftHeight = node.left.Height()
+	}
+
+	rightHeight := 0
+	if node.right != nil {
+		rightHeight = node.right.Height()
+	}
+
+	if leftHeight >= rightHeight {
+		return leftHeight + 1
+	} else {
+		return rightHeight + 1
+	}
+}

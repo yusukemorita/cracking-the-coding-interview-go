@@ -1,6 +1,7 @@
-go 1.21.5
+go 1.20
 
 use ./chapter1/questions
 use ./chapter1/implement_data_structures
 use ./chapter2
 use ./chapter3
+use ./chapter4

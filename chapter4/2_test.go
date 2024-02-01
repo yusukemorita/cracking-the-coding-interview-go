@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// difficult to test, so just print the BST
 func TestBuildBinarySearchTree(t *testing.T) {
 	t.Run("when there are lots of values", func(t *testing.T) {
 		sortedArray := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
@@ -15,7 +16,6 @@ func TestBuildBinarySearchTree(t *testing.T) {
 	t.Run("when there are no values", func(t *testing.T) {
 		sortedArray := []int{}
 		BuildBinarySearchTree(sortedArray)
-		// printBST(bst)
 	})
 
 	t.Run("when there is one value", func(t *testing.T) {

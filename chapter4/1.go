@@ -1,8 +1,10 @@
 package main
 
 // Implement bidirectional (breadth first) search, as it is more efficient
-// than breadth first searching from one node
-// assume all nodes have a unique value
+// than breadth first searching from one node.
+// Assume all nodes have a unique value. If there is no unique value that
+// can be used like an id, then we could add an `isVisited` boolean value
+// to the nodes, and do a search from one node instead of a bidirectional search.
 func HasRouteBetweenNodes(nodeA, nodeB GraphNode[string]) bool {
 	nodeAVisited := make(map[string]bool)
 	nodeBVisited := make(map[string]bool)

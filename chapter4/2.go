@@ -18,9 +18,10 @@ func BuildBinarySearchTree(sortedArray []int) *BinaryTreeNode {
 }
 
 type BinaryTreeNode struct {
-	value int
-	left  *BinaryTreeNode
-	right *BinaryTreeNode
+	value  int
+	left   *BinaryTreeNode
+	right  *BinaryTreeNode
+	parent *BinaryTreeNode
 }
 
 func (node *BinaryTreeNode) Height() int {

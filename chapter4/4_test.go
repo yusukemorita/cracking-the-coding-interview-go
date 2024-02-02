@@ -4,18 +4,18 @@ import "testing"
 
 func TestIsBalanced(t *testing.T) {
 	t.Run("returns false when heights of subtrees differ by more than one", func(t *testing.T) {
-		bst := &BSTNode{
+		bst := &BinaryTreeNode{
 			value: 6,
-			left: &BSTNode{
+			left: &BinaryTreeNode{
 				value: 4,
-				left: &BSTNode{
+				left: &BinaryTreeNode{
 					value: 2,
-					right: &BSTNode{
+					right: &BinaryTreeNode{
 						value: 5,
 					},
 				},
 			},
-			right: &BSTNode{
+			right: &BinaryTreeNode{
 				value: 9,
 			},
 		}
@@ -27,23 +27,23 @@ func TestIsBalanced(t *testing.T) {
 	})
 
 	t.Run("returns true when heights of subtrees differ by one", func(t *testing.T) {
-		bst := &BSTNode{
+		bst := &BinaryTreeNode{
 			value: 6,
-			left: &BSTNode{
+			left: &BinaryTreeNode{
 				value: 4,
-				left: &BSTNode{
+				left: &BinaryTreeNode{
 					value: 2,
-					right: &BSTNode{
+					right: &BinaryTreeNode{
 						value: 3,
 					},
 				},
-				right: &BSTNode{
+				right: &BinaryTreeNode{
 					value: 5,
 				},
 			},
-			right: &BSTNode{
+			right: &BinaryTreeNode{
 				value: 9,
-				right: &BSTNode{
+				right: &BinaryTreeNode{
 					value: 10,
 				},
 			},
@@ -55,17 +55,17 @@ func TestIsBalanced(t *testing.T) {
 	})
 
 	t.Run("returns false when heights of subtrees differ by zero", func(t *testing.T) {
-		bst := &BSTNode{
+		bst := &BinaryTreeNode{
 			value: 6,
-			left: &BSTNode{
+			left: &BinaryTreeNode{
 				value: 4,
-				left: &BSTNode{
+				left: &BinaryTreeNode{
 					value: 2,
 				},
 			},
-			right: &BSTNode{
+			right: &BinaryTreeNode{
 				value: 9,
-				right: &BSTNode{
+				right: &BinaryTreeNode{
 					value: 10,
 				},
 			},

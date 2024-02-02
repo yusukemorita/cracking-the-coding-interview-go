@@ -8,20 +8,20 @@ import (
 // difficult to test, so just print the BST
 func TestBuildDepthLists(t *testing.T) {
 	t.Run("", func(t *testing.T) {
-		bst := BSTNode{
+		bst := BinaryTreeNode{
 			value: 5,
-			left: &BSTNode{
+			left: &BinaryTreeNode{
 				value: 3,
-				left: &BSTNode{
+				left: &BinaryTreeNode{
 					value: 2,
 				},
 			},
-			right: &BSTNode{
+			right: &BinaryTreeNode{
 				value: 7,
-				left: &BSTNode{
+				left: &BinaryTreeNode{
 					value: 6,
 				},
-				right: &BSTNode{
+				right: &BinaryTreeNode{
 					value: 8,
 				},
 			},

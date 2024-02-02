@@ -1,6 +1,6 @@
 package main
 
-func BuildBinarySearchTree(sortedArray []int) *BSTNode {
+func BuildBinarySearchTree(sortedArray []int) *BinaryTreeNode {
 	if len(sortedArray) == 0 {
 		return nil
 	}
@@ -10,20 +10,20 @@ func BuildBinarySearchTree(sortedArray []int) *BSTNode {
 	left := sortedArray[:middleIndex]
 	right := sortedArray[middleIndex+1:]
 
-	return &BSTNode{
+	return &BinaryTreeNode{
 		value: middle,
 		left:  BuildBinarySearchTree(left),
 		right: BuildBinarySearchTree(right),
 	}
 }
 
-type BSTNode struct {
+type BinaryTreeNode struct {
 	value int
-	left  *BSTNode
-	right *BSTNode
+	left  *BinaryTreeNode
+	right *BinaryTreeNode
 }
 
-func (node *BSTNode) Height() int {
+func (node *BinaryTreeNode) Height() int {
 	leftHeight := 0
 	if node.left != nil {
 		leftHeight = node.left.Height()

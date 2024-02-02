@@ -1,15 +1,15 @@
 package main
 
-func BuildDepthLists(root *BSTNode) []*LinkedListNode[int] {
+func BuildDepthLists(root *BinaryTreeNode) []*LinkedListNode[int] {
 	var linkedLists []*LinkedListNode[int]
-	nextLevel := []*BSTNode{root}
+	nextLevel := []*BinaryTreeNode{root}
 
 	for {
 		if len(nextLevel) == 0 {
 			break
 		}
 
-		var newNextLevel []*BSTNode
+		var newNextLevel []*BinaryTreeNode
 		var linkedList *LinkedListNode[int]
 
 		for _, node := range nextLevel {

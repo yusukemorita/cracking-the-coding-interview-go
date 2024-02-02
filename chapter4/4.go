@@ -1,6 +1,6 @@
 package main
 
-func IsBalanced1(node *BSTNode) bool {
+func IsBalanced1(node *BinaryTreeNode) bool {
 	if node == nil {
 		return true
 	}
@@ -24,7 +24,7 @@ func IsBalanced1(node *BSTNode) bool {
 }
 
 // implement without using the Height() method
-func IsBalanced(node *BSTNode) (result bool, height int) {
+func IsBalanced(node *BinaryTreeNode) (result bool, height int) {
 	if node == nil {
 		return true, 0
 	}

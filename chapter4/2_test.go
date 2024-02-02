@@ -25,15 +25,15 @@ func TestBuildBinarySearchTree(t *testing.T) {
 	})
 }
 
-func printBST(node *BSTNode) {
-	nextLevel := []*BSTNode{node}
+func printBST(node *BinaryTreeNode) {
+	nextLevel := []*BinaryTreeNode{node}
 
 	for {
 		if len(nextLevel) == 0 {
 			break
 		}
 
-		var newNextLevel []*BSTNode
+		var newNextLevel []*BinaryTreeNode
 
 		for _, n := range nextLevel {
 			fmt.Printf(" %d ", n.value)

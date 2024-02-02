@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestIsBinarySearchTree(t *testing.T) {
-	t.Run("returns true when left <= node <= right for all nodes", func(t *testing.T) {
+	t.Run("returns true when left <= node < right for all nodes", func(t *testing.T) {
 		node := &BinaryTreeNode{
 			value: 5,
 			left: &BinaryTreeNode{
@@ -53,7 +53,7 @@ func TestIsBinarySearchTree(t *testing.T) {
 		}
 	})
 
-	t.Run("returns false when node > right exists", func(t *testing.T) {
+	t.Run("returns false when node >= right exists", func(t *testing.T) {
 		node := &BinaryTreeNode{
 			value: 5,
 			left: &BinaryTreeNode{
@@ -68,7 +68,7 @@ func TestIsBinarySearchTree(t *testing.T) {
 					value: 6,
 				},
 				right: &BinaryTreeNode{
-					value: 8,
+					value: 9, // this needs to be bigger than the parent to be a BST
 				},
 			},
 		}
@@ -78,7 +78,7 @@ func TestIsBinarySearchTree(t *testing.T) {
 		}
 	})
 
-	t.Run("returns false when left <= node.value <= right.value, but its not a BST when ancestors are inspected", func(t *testing.T) {
+	t.Run("returns false when left <= node.value < right.value, but it is not a BST when ancestors are inspected", func(t *testing.T) {
 		node := &BinaryTreeNode{
 			value: 20,
 			left: &BinaryTreeNode{

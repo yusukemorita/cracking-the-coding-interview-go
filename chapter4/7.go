@@ -3,94 +3,86 @@ package main
 import "fmt"
 
 type dependency struct {
-	from string
-	to   string
+	dependant string
+	depended  string
 }
 
-func BuildOrder(projects []string, dependencies []dependency) ([]string, bool) {
-	dependencyMap := make(map[string][]string)
-	for _, d := range dependencies {
-		dependencyMap[d.from] = append(dependencyMap[d.from], d.to)
+type Project struct {
+	name            string
+	dependencyCount int
+}
+
+func BuildOrder(projectNames []string, dependencies []dependency) ([]string, bool) {
+	allNodes := buildGraphNodes(projectNames, dependencies)
+
+	var queue []GraphNode[Project]
+
+	// find "root" nodes (nodes that don't have any dependencies) and
+	// add them to the queue
+	for _, node := range allNodes {
+		if node.value.dependencyCount == 0 {
+			queue = append(queue, node)
+		}
 	}
 
 	var order []string
-	validOrder := false
-
 	for {
-		if len(projects) == 0 {
-			validOrder = true
+		if len(queue) == 0 {
 			break
 		}
 
-		var newProjects []string
-		noDependencyProjectFound := false
+		current := queue[0]
+		queue = queue[1:]
 
-		for _, project := range projects {
-			fmt.Printf("inspecting project %s\n", project)
-			deps, ok := dependencyMap[project]
-			if !ok || len(deps) == 0 {
-				// no dependencies
-				order = append(order, project)
-				removeDependency(project, dependencyMap)
-				noDependencyProjectFound = true
-			} else {
-				newProjects = append(newProjects, project)
+		order = append(order, current.value.name)
+
+		for _, child := range current.children {
+			child.value.dependencyCount--
+			if child.value.dependencyCount == 0 {
+				queue = append(queue, *child)
 			}
 		}
-
-		// if everything has a dependency, then there is no valid build cycle
-		if !noDependencyProjectFound {
-			break
-		}
-
-
-
-
-
-
-		projects = newProjects
 	}
 
-	return order, validOrder
-}
-
-
-func removeDependency(project string, dependencyMap map[string][]string) {
-	for key, values := range dependencyMap {
-		dependencyMap[key] = removeValue(values, project)
+	if len(order) != len(projectNames) {
+		return nil, false
 	}
+
+	return order, true
 }
 
-func removeValue(slice []string, value string) []string {
-	var new []string
-	for _, val := range slice {
-		if val != value {
-			new = append(new, val)
+// children: nodes that must be built AFTER the node
+func buildGraphNodes(projectNames []string, dependencies []dependency) []GraphNode[Project] {
+	allNodes := make(map[string]*GraphNode[Project])
+	for _, name := range projectNames {
+		allNodes[name] = &GraphNode[Project]{
+			value: Project{
+				name:            name,
+				dependencyCount: 0,
+			},
+			children: []*GraphNode[Project]{},
 		}
 	}
 
-	return new
+	for _, d := range dependencies {
+		dependantNode, ok := allNodes[d.dependant]
+		if !ok {
+			panic(fmt.Sprintf("node %s not found", d.dependant))
+		}
+
+		dependedNode, ok := allNodes[d.depended]
+		if !ok {
+			panic(fmt.Sprintf("node %s not found", d.depended))
+		}
+
+		dependedNode.children = append(dependedNode.children, dependantNode)
+		dependantNode.value.dependencyCount++
+	}
+
+	var slice []GraphNode[Project]
+	for _, node := range allNodes {
+		slice = append(slice, *node)
+	}
+
+	return slice
 }
-
-// func hasNoDependency(project string, dependenci)
-
-// var allNodes map[string]GraphNode[string]
-// for _, project := range projects {
-// 	allNodes[project] = GraphNode[string]{
-// 		value: project,
-// 	}
-// }
-
-// for _, d := range dependencies {
-// 	fromNode, ok := allNodes[d.from]
-// 	if !ok {
-// 		panic(fmt.Sprintf("node %s not found", d.from))
-// 	}
-
-// 	toNode, ok := allNodes[d.to]
-// 	if !ok {
-// 		panic(fmt.Sprintf("node %s not found", d.to))
-// 	}
-
-// 	fromNode.children = append(fromNode.children, &toNode)
-// }

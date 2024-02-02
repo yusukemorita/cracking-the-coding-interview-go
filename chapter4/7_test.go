@@ -11,12 +11,12 @@ func TestBuildOrder(t *testing.T) {
 		projects := []string{"a", "b", "c"}
 		dependencies := []dependency{
 			{
-				from: "a",
-				to:   "b",
+				dependant: "a",
+				depended:  "b",
 			},
 			{
-				from: "b",
-				to:   "c",
+				dependant: "b",
+				depended:  "c",
 			},
 		}
 
@@ -35,16 +35,16 @@ func TestBuildOrder(t *testing.T) {
 		projects := []string{"a", "b", "c"}
 		dependencies := []dependency{
 			{
-				from: "a",
-				to:   "b",
+				dependant: "a",
+				depended:  "b",
 			},
 			{
-				from: "b",
-				to:   "c",
+				dependant: "b",
+				depended:  "c",
 			},
 			{
-				from: "c",
-				to:   "a",
+				dependant: "c",
+				depended:  "a",
 			},
 		}
 

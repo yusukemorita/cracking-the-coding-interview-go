@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // with links to parents
 func CommonAncestor(nodeA, nodeB *BinaryTreeNode) *BinaryTreeNode {
 	nodeAAncestors := make(map[*BinaryTreeNode]bool)
@@ -105,4 +107,56 @@ func search(node, target *BinaryTreeNode) bool {
 	}
 
 	return search(node.left, target) || search(node.right, target)
+}
+
+// without links to parents
+// avoid storing additional nodes in a data structure
+// time: O(n)
+func CommonAncestor4(root, nodeA, nodeB *BinaryTreeNode) *BinaryTreeNode {
+	ancestor := root
+	if root == nodeA || root == nodeB {
+		return root
+	}
+
+	for {
+		// Assuming tree is balanced, visits all nodes on the left side twice,
+		// so visit count = 2 * n/2 = n
+		// As the loop progresses, each time the number of nodes visited is cut in
+		// approximately half. So, the number of nodes visited is
+		//      n + n/2 + n/4 + ... + 2 + 1 = X
+		// 2n + n + n/2 + n/4 + ... + 2     = 2X
+		// -> X = 2n + 1
+		// therefore, the time complexity is O(2n-1) = O(n)
+		aIsOnLeft := covers(ancestor.left, nodeA)
+		bIsOnLeft := covers(ancestor.left, nodeB)
+
+		if aIsOnLeft && bIsOnLeft {
+			ancestor = root.left
+			continue
+		}
+
+		if !aIsOnLeft && !bIsOnLeft {
+			ancestor = root.right
+			continue
+		}
+
+		// neither left nor right are common ancestors, so the current `ancestor`
+		// is the first common ancestor
+		break
+	}
+
+	return ancestor
+}
+
+
+func covers(maybeAncestor, node *BinaryTreeNode) bool {
+	if maybeAncestor == nil {
+		return false
+	}
+
+	if maybeAncestor == node {
+		return true
+	}
+
+	return covers(maybeAncestor.left, node) || covers(maybeAncestor.right, node)
 }

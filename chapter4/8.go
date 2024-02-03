@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // with links to parents
 func CommonAncestor(nodeA, nodeB *BinaryTreeNode) *BinaryTreeNode {
 	nodeAAncestors := make(map[*BinaryTreeNode]bool)
@@ -159,4 +157,29 @@ func covers(maybeAncestor, node *BinaryTreeNode) bool {
 	}
 
 	return covers(maybeAncestor.left, node) || covers(maybeAncestor.right, node)
+}
+
+func CommonAncestor5(root, nodeA, nodeB *BinaryTreeNode) (commonAncestor *BinaryTreeNode, hasA, hasB bool) {
+	if root == nil {
+		return nil, false, false
+	}
+
+	commonLeft, leftHasA, leftHasB := CommonAncestor5(root.left, nodeA, nodeB)
+	if commonLeft != nil {
+		return commonLeft, true, true
+	}
+
+	commonRight, rightHasA, rightHasB := CommonAncestor5(root.right, nodeA, nodeB)
+	if commonRight != nil {
+		return commonRight, true, true
+	}
+
+	hasA = leftHasA || rightHasA || root == nodeA
+	hasB = leftHasB || rightHasB || root == nodeB
+
+	if hasA && hasB {
+		return root, true, true
+	}
+
+	return nil, hasA, hasB
 }

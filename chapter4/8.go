@@ -32,28 +32,18 @@ func CommonAncestor(nodeA, nodeB *BinaryTreeNode) *BinaryTreeNode {
 // with links to parents
 // avoid storing additional nodes in a data structure
 // time: O((logN)^2)
-func CommonAncestor2(root, nodeA, nodeB *BinaryTreeNode) *BinaryTreeNode {
-	ancestor := root
+func CommonAncestor2(nodeA, nodeB *BinaryTreeNode) *BinaryTreeNode {
+	nodeAAncestor := nodeA
 
 	for {
-		if isAncestor(ancestor.left, nodeA) && isAncestor(ancestor.left, nodeB) {
-			// left is an ancestor of both nodes
-			ancestor = ancestor.left
-			continue
+		if isAncestor(nodeAAncestor, nodeB) {
+			break
 		}
 
-		if isAncestor(ancestor.right, nodeA) && isAncestor(ancestor.right, nodeB) {
-			// right is an ancestor of both nodes
-			ancestor = ancestor.right
-			continue
-		}
-
-		// neither left or right are both ancestors, which means that the current `ancestor`
-		// is the first common ancestor
-		break
+		nodeAAncestor = nodeAAncestor.parent
 	}
 
-	return ancestor
+	return nodeAAncestor
 }
 
 // O(logN)

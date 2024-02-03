@@ -117,7 +117,7 @@ func TestCommonAncestor2(t *testing.T) {
 
 	for index, tc := range testCases {
 		t.Run(fmt.Sprintf("test case %d", index), func(t *testing.T) {
-			got := CommonAncestor2(root, tc.nodeA, tc.nodeB)
+			got := CommonAncestor2(tc.nodeA, tc.nodeB)
 			if got != tc.expected {
 				t.Error()
 			}

@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestBuildOrder(t *testing.T) {
+func TestBuildOrder2(t *testing.T) {
 	t.Run("returns a valid build order", func(t *testing.T) {
 		projects := []string{"a", "b", "c"}
 		dependencies := []dependency{
@@ -20,7 +20,7 @@ func TestBuildOrder(t *testing.T) {
 			},
 		}
 
-		got, ok := BuildOrder(projects, dependencies)
+		got, ok := BuildOrder2(projects, dependencies)
 		if !ok {
 			t.Error()
 		}
@@ -48,7 +48,7 @@ func TestBuildOrder(t *testing.T) {
 			},
 		}
 
-		_, ok := BuildOrder(projects, dependencies)
+		_, ok := BuildOrder2(projects, dependencies)
 		if ok {
 			t.Error()
 		}

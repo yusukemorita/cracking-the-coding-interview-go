@@ -31,7 +31,7 @@ func CommonAncestor(nodeA, nodeB *BinaryTreeNode) *BinaryTreeNode {
 
 // with links to parents
 // avoid storing additional nodes in a data structure
-// time: O((logN)^2)
+// time: O((logN)^2) for a balanced tree
 func CommonAncestor2(nodeA, nodeB *BinaryTreeNode) *BinaryTreeNode {
 	nodeAAncestor := nodeA
 
@@ -57,4 +57,52 @@ func isAncestor(maybeAncestor, node *BinaryTreeNode) bool {
 	}
 
 	return isAncestor(maybeAncestor, node.parent)
+}
+
+// with links to parents
+// avoid storing additional nodes in a data structure
+// improve performance over CommonAncestor2
+// time: O(N), since every node is searched only once
+func CommonAncestor3(nodeA, nodeB *BinaryTreeNode) *BinaryTreeNode {
+	current := nodeA
+	if search(current, nodeB) {
+		return current
+	}
+
+	for {
+		if current.parent == nil {
+			// current is root
+			return current
+		}
+
+		parent := current.parent
+		if parent == nodeB {
+			return parent
+		}
+
+		var sibling *BinaryTreeNode
+		if parent.left == current {
+			sibling = parent.right
+		} else {
+			sibling = parent.left
+		}
+		if search(sibling, nodeB) {
+			return parent
+		}
+
+		current = current.parent
+	}
+}
+
+// return true if the target is found in the node subtree
+func search(node, target *BinaryTreeNode) bool {
+	if node == nil {
+		return false
+	}
+
+	if node == target {
+		return true
+	}
+
+	return search(node.left, target) || search(node.right, target)
 }

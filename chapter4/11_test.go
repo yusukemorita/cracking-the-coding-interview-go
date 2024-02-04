@@ -4,27 +4,31 @@ import (
 	"testing"
 )
 
-func TestInsert(t *testing.T) {
-	//   15
-	//  13 20
-	root := &BinaryTreeNode{value:  15}
-	right := &BinaryTreeNode{value:  20}
-	root.right = right
-	left := &BinaryTreeNode{value:  13}
-	root.left = left
+func TestGetRandomNode(t *testing.T) {
+	t.Run("returns root when there is only one node", func(t *testing.T) {
+		root := &RandomNode{value: 15, size: 1}
+		tree := RandomTree{root: root}
 
-	tree := BinaryTree{root: root}
+		random := tree.GetRandomNode()
+		if random.value != 15 {
+			t.Error()
+		}
+	})
 
-	if right.right != nil {
-		t.Fatal("right.right must be nil")
-	}
+	t.Run("returns a node in the tree", func(t *testing.T) {
+		//   15
+		//  13 20
+		root := &RandomNode{value: 15, size: 3}
+		right := &RandomNode{value: 20, size: 1}
+		root.right = right
+		left := &RandomNode{value: 13, size: 1}
+		root.left = left
 
-	tree.Insert(25)
+		tree := RandomTree{root: root}
 
-	if right.right == nil {
-		t.Fatal("right.right should not be nil")
-	}
-	if right.right.value != 25 {
-		t.Error("right.right should be 25")
-	}
+		random := tree.GetRandomNode()
+		if !(random.value == 15 || random.value == 20 || random.value == 13) {
+			t.Error()
+		}
+	})
 }

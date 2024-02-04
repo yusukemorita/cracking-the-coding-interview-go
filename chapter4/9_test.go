@@ -8,7 +8,6 @@ func TestBSTSequence(t *testing.T) {
 	//     10
 	//   5    15
 	//       13 20
-
 	root := &BinaryTreeNode{value: 10}
 	left := &BinaryTreeNode{
 		value:  5,

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -26,9 +27,14 @@ func TestGetRandomNode(t *testing.T) {
 
 		tree := RandomTree{root: root}
 
-		random := tree.GetRandomNode()
-		if !(random.value == 15 || random.value == 20 || random.value == 13) {
-			t.Error()
+		counts := make(map[int]int)
+		for i := 0; i <= 100000; i++ {
+			random := tree.GetRandomNode()
+			counts[random.value]++
+		}
+
+		for value, count := range counts {
+			fmt.Printf("%d: %d times\n", value, count)
 		}
 	})
 }

@@ -31,61 +31,38 @@ type RandomTree struct {
 // - GetRandomNode: Extract all nodes from the map into an array, and then do as solution 1.
 //                  extracting the nodes will take O(N) time.
 
-// solution 3. pick a random number to decide to traverse left, right or use the current node value
-//             balance the probabilities, so the size of the subtree is considered
+// solution 3. pick one random number X, and return the Xth node in in order traversal.
 // - Find: unchanged
 // - Insert: increment the size of all parents of the inserted node.
 //           runtime complexity should stay the same.
 // - Delete: unchanged
+// - GetRandomNode: time complexity is O(logN) if balanced, or O(D) (D = depth)
 
 func (tree *RandomTree) GetRandomNode() *RandomNode {
-	return getRandomNode(tree.root)
+	random := rand.Intn(tree.root.size)
+
+	return getRandomNode(random, tree.root)
 }
 
-func getRandomNode(node *RandomNode) *RandomNode {
-	if node.left == nil && node.right == nil {
+func getRandomNode(random int, node *RandomNode) *RandomNode {
+	// when left size is L, and right size is R
+	// random = 0               ... node
+	// 1 <= random <= L         ... left
+	// L + 1 <= random <= L + R ... right
+	leftSize := 0
+	if node.left != nil {
+		leftSize = node.left.size
+	}
+
+	if random == 0 {
 		return node
 	}
 
-	weightNodes := []WeightNode{
-		{
-			node:   node,
-			weight: 1,
-		},
+	// 1 <= random <= L
+	if 1 <= random && random <= leftSize {
+		return getRandomNode(random-1, node.left)
 	}
 
-	if node.left != nil {
-		weightNodes = append(weightNodes, WeightNode{
-			node:   node.left,
-			weight: node.left.size,
-		})
-	}
-
-	if node.right != nil {
-		weightNodes = append(weightNodes, WeightNode{
-			node:   node.right,
-			weight: node.right.size,
-		})
-	}
-
-	return weightedRandomSelect(weightNodes)
-}
-
-type WeightNode struct {
-	node        *RandomNode
-	weight      int
-	randomRange []int // tuple of two values, inclusive range
-}
-
-func weightedRandomSelect(weightNodes []WeightNode) *RandomNode {
-	var weighted []*RandomNode
-
-	for _, wn := range weightNodes {
-		for i := 1; i <= wn.weight; i++ {
-			weighted = append(weighted, wn.node)
-		}
-	}
-
-	randomIndex := rand.Intn(len(weighted))
-	return weighted[randomIndex]
+	// L + 1 <= random <= L + R
+	return getRandomNode(random-1-leftSize, node.right)
 }

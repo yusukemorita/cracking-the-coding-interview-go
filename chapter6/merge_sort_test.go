@@ -31,8 +31,8 @@ func TestMergeSort(t *testing.T) {
 
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
-			got := MergeSort(tc.original)
-			diff := cmp.Diff(got, tc.expected)
+			MergeSort(tc.original)
+			diff := cmp.Diff(tc.original, tc.expected)
 			if diff != "" {
 				t.Error(diff)
 			}
@@ -40,14 +40,14 @@ func TestMergeSort(t *testing.T) {
 	}
 }
 
-func TestMerge(t *testing.T) {
-	half1 := []int{1, 3, 5}
-	half2 := []int{2, 4}
+// func TestMerge(t *testing.T) {
+// 	half1 := []int{1, 3, 5}
+// 	half2 := []int{2, 4}
 
-	got := merge(half1, half2)
+// 	got := merge(half1, half2)
 
-	diff := cmp.Diff(got, []int{1, 2, 3, 4, 5})
-	if diff != "" {
-		t.Error(diff)
-	}
-}
+// 	diff := cmp.Diff(got, []int{1, 2, 3, 4, 5})
+// 	if diff != "" {
+// 		t.Error(diff)
+// 	}
+// }

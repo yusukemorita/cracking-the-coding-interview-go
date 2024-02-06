@@ -5,4 +5,4 @@ use ./chapter1/implement_data_structures
 use ./chapter2
 use ./chapter3
 use ./chapter4
-use ./chapter6
+use ./chapter10

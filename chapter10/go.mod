@@ -1,4 +1,4 @@
-module example.com/chapter6
+module example.com/chapter10
 
 go 1.20
 
